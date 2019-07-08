@@ -8,8 +8,10 @@ def test_0_reset():
     assert res.status_code == 200
 
 
-# GET
 def test_1_get_all_characters():
+    """Тест получает всех персонажей БД, проверяет статус код
+    """
+
     url = 'http://rest.test.ivi.ru'
     iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
     chars = Characters(iviReq)
@@ -20,6 +22,7 @@ def test_1_get_all_characters():
     if code == 200:
         print(chars.arr)
     assert code == 200
+
 
 if __name__ == "__main__":
     test_0_reset()

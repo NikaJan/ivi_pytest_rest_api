@@ -11,8 +11,9 @@ def test_0_reset():
     assert res.status_code == 200
 
 
-#GET
 def test_1_get_existing_character_check_all_fields():
+    """Тест получает персонажа по имени и проверяет его поля
+    """
 
     some.name = '3-D Man'
     res = some.read()
@@ -27,8 +28,9 @@ def test_1_get_existing_character_check_all_fields():
     assert res.data[0].get('weight') == 90.0
 
 
-#GET
 def test_2_no_such_name():
+    """Тест получает персонажа, которого нет на сервере и проверяет ответ
+    """
 
     some.name = 'Ivanov2'
     res = some.read()
@@ -39,20 +41,20 @@ def test_2_no_such_name():
     assert message == 'No such name'
 
 
-#GET
 def test_3_no_such_name_special_characters():
+    """Тест Тест получает персонажа с именем спецсимволами
+    """
 
     some.name = '%!!@#$%'
     res = some.read()
     code = res.code
-    message = res.msg
 
-    assert code == 200
-    assert message == 'No such name'
+    assert code == 400
 
 
-#GET
 def test_4_no_name():
+    """Тест получает персонажа с пустым именем
+    """
 
     some.name = ''
     res = some.read()
@@ -65,7 +67,7 @@ def test_4_no_name():
 
 if __name__ == "__main__":
     test_0_reset()
-    # test_1_get_existing_character_check_all_fields()
-    # test_2_no_such_name()
-    # test_3_no_such_name_special_characters()
+    test_1_get_existing_character_check_all_fields()
+    test_2_no_such_name()
+    test_3_no_such_name_special_characters()
     test_4_no_name()

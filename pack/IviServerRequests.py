@@ -1,11 +1,20 @@
+"""Модуль содержит класс обработки ответов сервера"""
+
 import requests
 from requests.auth import HTTPBasicAuth
 from pack.IviServerResponse import *
 
 
 class IviServerRequests:
+    """Класс отправки запросов на тестовый сервер ivi"""
 
     def __init__(self, url, login, password):
+        """Конструктор
+
+        :param str url: URL сервера с протоколом например http://some.ru
+        :param str login: логин для аутентификации на сервере
+        :param str password: пароль для аутентификации на сервере
+        """
         self._url = url
         self._login = login
         self._password = password
@@ -13,6 +22,12 @@ class IviServerRequests:
         self._auth = HTTPBasicAuth(login, password)
 
     def get(self, name=None):
+        """Метод отправки GET запроса
+
+        :param str name: имя CRUD объекта
+        :return: результат отправки запроса на сервер
+        :rtype: IviServerResponse
+        """
         url = self._url + '/' + self.obj_type
         if name is not None:
             url += '/' + name
@@ -20,17 +35,36 @@ class IviServerRequests:
         return GetResponse(response.status_code, response.text)
 
     def post(self, data):
+        """Метод отправки POST запроса
+
+        :param JSON data: данные для обновления на  сервере
+        :return: результат отправки запроса на сервер
+        :rtype: IviServerResponse
+        """
         url = self._url + '/' + self.obj_type
         response = requests.post(url, auth=self._auth, data=data, headers=self._headers)
         # TODO дополнительно логирование
         return PostResponse(response.status_code, response.text)
 
     def put(self, name, data):
+        """Метод отправки PUT запроса
+
+        :param str name: имя CRUD объекта
+        :param JSON data: данные для обновления на  сервере
+        :return: результат отправки запроса на сервер
+        :rtype: IviServerResponse
+        """
         url = self._url + '/' + self.obj_type + '/' + name
         response = requests.put(url, auth=self._auth, data=data, headers=self._headers)
         return PutResponse(response.status_code, response.text)
 
     def delete(self, name):
+        """Метод отправки DELETE запроса
+
+        :param str name: имя CRUD объекта
+        :return: результат отправки запроса на сервер
+        :rtype: IviServerResponse
+        """
         url = self._url + '/' + self.obj_type + '/' + name
         response = requests.delete(url, auth=self._auth, headers=self._headers)
         res = DeleteResponse(response.status_code, response.text)

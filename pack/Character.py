@@ -1,3 +1,5 @@
+"""Модуль содержит класс для работы с типом Character на сервере"""
+
 import json
 
 
@@ -5,7 +7,10 @@ class Character:
     """Класс персонаж"""
 
     def __init__(self, req):
-        """Конструктор"""
+        """Конструктор
+
+        :param IviServerRequests req: объект позволяющий отправить запросы на сервер
+        """
         self.name = ""
         self.universe = ""
         self.education = ""
@@ -17,16 +22,20 @@ class Character:
         self.__req.obj_type = 'character'
 
     def create(self):
-        """
-        create
+        """Метод создает объект на сервере
+
+        :return: возвращает объект содержащий ответ от сервера
+        :rtype: IviServerResponse
         """
         data = self.to_json()
         res = self.__req.post(data)
         return res
 
     def read(self):
-        """
-        read
+        """Метод читает объект с сервера
+
+        :return: возвращает объект содержащий ответ от сервера
+        :rtype: IviServerResponse
         """
         res = self.__req.get(self.name)
         if res.code == 200 and res.msg is None:
@@ -35,20 +44,29 @@ class Character:
         return res
 
     def update(self):
-        """
-        update
+        """Метод обновляет объект на сервере
+
+        :return: возвращает объект содержащий ответ от сервера
+        :rtype: IviServerResponse
         """
         data = self.to_json()
         return self.__req.put(self.name, data)
 
     def delete(self):
-        """
-        delete
+        """Метод удаляет данный объект с сервера
+
+        :return: возвращает объект содержащий ответ от сервера
+        :rtype: IviServerResponse
         """
         res = self.__req.delete(self.name)
         return res
 
     def to_json(self):
+        """Метод получает JSON из данных в текущем объекте
+
+        :return: возвращает объект содержащий ответ от сервера
+        :rtype: Object
+        """
         return json.JSONEncoder().encode(
             {
                 "education": self.education,
@@ -62,6 +80,10 @@ class Character:
         )
 
     def from_json(self, data):
+        """Метод заполняет текущий объект данными из JSON
+
+        :param Object data: объект содержащий JSON данные
+        """
         self.education = data["education"]
         self.height = data["height"]
         self.identity = data["identity"]

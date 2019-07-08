@@ -59,8 +59,8 @@ def test_4_no_name():
     code = res.code
     message = res.msg
 
-    assert code == 200
-    assert message == 'No such name'
+    assert code == 404
+    assert message is None
 
 
 if __name__ == "__main__":

@@ -29,7 +29,7 @@ class Character:
         read
         """
         res = self.__req.get(self.name)
-        if res.msg is None:
+        if res.code == 200 and res.msg is None:
             self.from_json(res.data[0])
 
         return res
@@ -62,7 +62,6 @@ class Character:
         )
 
     def from_json(self, data):
-        # json_data = json.loads(json_str)
         self.education = data["education"]
         self.height = data["height"]
         self.identity = data["identity"]

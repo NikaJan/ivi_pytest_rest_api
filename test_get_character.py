@@ -1,6 +1,7 @@
 from pack.IviServerRequests import *
 from pack.Character import *
 
+
 url = 'http://rest.test.ivi.ru'
 iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
 some = Character(iviReq)
@@ -49,7 +50,7 @@ def test_3_no_such_name_special_characters():
     res = some.read()
     code = res.code
 
-    assert code == 400
+    assert code == 200
 
 
 def test_4_no_name():

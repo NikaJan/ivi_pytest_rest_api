@@ -1,6 +1,5 @@
 from pack.IviServerRequests import *
 from pack.Character import *
-import os
 
 
 def test_0_reset():

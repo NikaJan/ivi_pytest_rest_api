@@ -1,5 +1,7 @@
-from pack.IviServerRequests import *
-from pack.Character import *
+from requests.auth import HTTPBasicAuth
+from pack import IviServerRequests
+from pack import Character
+import requests
 
 
 def test_0_reset():
@@ -12,8 +14,8 @@ def test_1_delete_existing_character():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 'Ivanov'
     some.education = 'High School'
@@ -47,8 +49,8 @@ def test_2_delete_not_exist_character():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 'Ivanov2'
     res = some.update()

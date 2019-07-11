@@ -1,10 +1,12 @@
-from pack.IviServerRequests import *
-from pack.Character import *
+from requests.auth import HTTPBasicAuth
+from pack import IviServerRequests
+from pack import Character
+import requests
 
 
 url = 'http://rest.test.ivi.ru'
-iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-some = Character(iviReq)
+iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+some = Character.Character(iviReq)
 
 
 def test_0_reset():

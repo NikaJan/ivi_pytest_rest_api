@@ -1,6 +1,9 @@
-from pack.IviServerRequests import *
-from pack.Character import *
+from requests.auth import HTTPBasicAuth
+from pack import IviServerRequests
+from pack import Character
 import os
+import requests
+import json
 
 
 def test_0_reset():
@@ -13,8 +16,8 @@ def test_1_create_new_character():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 'Ivanov'
     some.education = 'High School'
@@ -41,8 +44,8 @@ def test_2_create_already_exists():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 'Ivanov'
     some.education = 'High School'
@@ -64,8 +67,8 @@ def test_3_merge_type_fields():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 123
     some.education = 456
@@ -92,8 +95,8 @@ def test_4_empty_fields():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = ''
     some.education = ''
@@ -120,8 +123,8 @@ def test_5_too_big_fields():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     with open('lorem', 'r') as file:
         data = file.read().replace('\n', '')
@@ -154,8 +157,8 @@ def test_6_create_character_and_check_get():
     """
 
     url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character(iviReq)
+    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
+    some = Character.Character(iviReq)
 
     some.name = 'Ivanov'
     some.education = 'High School'

@@ -18,8 +18,6 @@ def test_1_get_all_characters():
     chars = Characters.Characters(iviReq)
     res = chars.get()
     code = res.code
-    message = res.msg
-    data = res.data
     if code == 200:
         print(chars.arr)
     assert code == 200

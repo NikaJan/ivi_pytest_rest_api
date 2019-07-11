@@ -3,6 +3,7 @@
 import requests
 from requests.auth import HTTPBasicAuth
 from pack.IviServerResponse import *
+import urllib.parse
 
 
 class IviServerRequests:
@@ -28,9 +29,11 @@ class IviServerRequests:
         :return: результат отправки запроса на сервер
         :rtype: IviServerResponse
         """
-        url = self._url + '/' + self.obj_type
+        #url = self._url + '/' + self.obj_type
+        url = '{}{}{}'.format(self._url, urllib.parse.quote('/'), self.obj_type)
         if name is not None:
-            url += '/' + name
+            #url += '/' + name
+            url += '{}{}'.format(urllib.parse.quote('/'), name)
         response = requests.get(url, auth=self._auth, headers=self._headers)
         return GetResponse(response.status_code, response.text)
 
@@ -41,7 +44,8 @@ class IviServerRequests:
         :return: результат отправки запроса на сервер
         :rtype: IviServerResponse
         """
-        url = self._url + '/' + self.obj_type
+        #url = self._url + '/' + self.obj_type
+        url = '{}{}{}'.format(self._url, urllib.parse.quote('/'), self.obj_type)
         response = requests.post(url, auth=self._auth, data=data, headers=self._headers)
         # TODO дополнительно логирование
         return PostResponse(response.status_code, response.text)
@@ -54,7 +58,8 @@ class IviServerRequests:
         :return: результат отправки запроса на сервер
         :rtype: IviServerResponse
         """
-        url = self._url + '/' + self.obj_type + '/' + name
+        #url = self._url + '/' + self.obj_type + '/' + name
+        url = '{}{}{}{}{}'.format(self._url, urllib.parse.quote('/'), self.obj_type, urllib.parse.quote('/'), name)
         response = requests.put(url, auth=self._auth, data=data, headers=self._headers)
         return PutResponse(response.status_code, response.text)
 
@@ -65,7 +70,8 @@ class IviServerRequests:
         :return: результат отправки запроса на сервер
         :rtype: IviServerResponse
         """
-        url = self._url + '/' + self.obj_type + '/' + name
+        #url = self._url + '/' + self.obj_type + '/' + name
+        url = '{}{}{}{}{}'.format(self._url, urllib.parse.quote('/'), self.obj_type, urllib.parse.quote('/'), name)
         response = requests.delete(url, auth=self._auth, headers=self._headers)
         res = DeleteResponse(response.status_code, response.text)
         # тут можно обработать идентификатор удаленного объекта

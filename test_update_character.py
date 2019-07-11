@@ -1,10 +1,8 @@
 from requests.auth import HTTPBasicAuth
-from pack import IviServerRequests
-from pack import Character
 import os
 import requests
 import json
-
+from pack.config import ivi_user
 
 
 def test_0_reset():
@@ -12,15 +10,12 @@ def test_0_reset():
     assert res.status_code == 200
 
 
-def test_1_update_existing_character():
+def test_1_update_existing_character(case_data):
     """Тест обновляет существующего персонажа на сервере
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov'
+    some = case_data
+    some.name = ivi_user
     some.education = 'High School'
     some.universe = 'Marvel'
     some.identity = 'Publicly'
@@ -29,10 +24,9 @@ def test_1_update_existing_character():
     some.other_aliases = 'None'
     res = some.create()
     code = res.code
-
     assert code == 200
 
-    some.name = 'Ivanov'
+    some.name = ivi_user
     some.education = 'High School2'
     some.universe = 'Marvel2'
     some.identity = 'Publicly2'
@@ -41,7 +35,6 @@ def test_1_update_existing_character():
     some.other_aliases = 'True'
     res = some.update()
     code2 = res.code
-    message = res.msg
 
     assert code2 == 200
     assert res.data.get('education') == 'High School2'
@@ -52,15 +45,12 @@ def test_1_update_existing_character():
     assert res.data.get('universe') == 'Marvel2'
 
 
-def test_2_update_not_exist_character():
+def test_2_update_not_exist_character(case_data):
     """Тест обновляет несуществующего персонажа на сервере
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov2'
+    some = case_data
+    some.name = '{}{}'.format(ivi_user, 2)
     some.education = 'High School'
     some.universe = 'Marvel'
     some.identity = 'Publicly'
@@ -69,19 +59,15 @@ def test_2_update_not_exist_character():
     some.other_aliases = 'None'
     res = some.update()
     code = res.code
-
     assert code == 500
 
 
-def test_3_merge_type_fields():
+def test_3_merge_type_fields(case_data):
     """Тест обновляет персонажа с измененными типами полей
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov'
+    some = case_data
+    some.name = ivi_user
     some.education = 456
     some.universe = 678
     some.identity = 890
@@ -100,15 +86,12 @@ def test_3_merge_type_fields():
     assert res.data.get('universe') == 678
 
 
-def test_4_empty_fields():
+def test_4_empty_fields(case_data):
     """Тест обновляет персонажа с пустыми полями
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov'
+    some = case_data
+    some.name = ivi_user
     some.education = ''
     some.universe = ''
     some.identity = ''
@@ -127,13 +110,11 @@ def test_4_empty_fields():
     assert res.data.get('universe') == ''
 
 
-def test_5_too_big_fields():
+def test_5_too_big_fields(case_data):
     """Тест обновляет персонажа большими значениями полей
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
+    some = case_data
 
     with open('lorem', 'r') as file:
         data = file.read().replace('\n', '')
@@ -141,7 +122,7 @@ def test_5_too_big_fields():
     with open('ints', 'r') as file:
         ints = file.read().replace('\n', '')
 
-    some.name = 'Ivanov'
+    some.name = ivi_user
     some.education = data
     some.universe = data
     some.identity = data
@@ -160,14 +141,12 @@ def test_5_too_big_fields():
     assert res.data.get('universe') == data
 
 
-def test_6_update_character_and_check_get():
+def test_6_update_character_and_check_get(case_data):
     """Тест обновляет персонажа и проверяет через get, обновился ли он
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-    some.name = 'Ivanov'
+    some = case_data
+    some.name = ivi_user
     some.education = 'High School 1'
     some.universe = 'Marvel 1'
     some.identity = 'Publicly 1'
@@ -178,8 +157,7 @@ def test_6_update_character_and_check_get():
     code = res.code
 
     assert code == 200
-
-    some.name = 'Ivanov'
+    some.name = ivi_user
     res = some.read()
     code = res.code
 
@@ -197,8 +175,7 @@ def test_7_update_fields_not_exist():
     """
 
     url = "http://rest.test.ivi.ru/character/Ivanov"
-    root_dir = os.path.abspath(os.curdir)
-    file = open(root_dir + "\\" + "not_exist_fields.json")
+    file = open(os.path.join(os.path.abspath(os.curdir), "not_exist_fields.json"))
     json_input = file.read()
     json_request = json.loads(json_input)
     headers = {'content-type': 'application/json'}

@@ -1,6 +1,6 @@
 from requests.auth import HTTPBasicAuth
-from pack import IviServerRequests
-from pack import Character
+from pack import config
+from pack.config import ivi_user
 import requests
 
 
@@ -9,50 +9,40 @@ def test_0_reset():
     assert res.status_code == 200
 
 
-def test_1_delete_existing_character():
+def test_1_delete_existing_character(case_data):
     """Тест удаляет существующий обьект на сервере
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov'
-    some.education = 'High School'
-    some.universe = 'Marvel'
-    some.identity = 'Publicly'
-    some.height = 150
-    some.weight = 100
-    some.other_aliases = 'None'
+    some = case_data
+    some.name = ivi_user
+    some.education = config.get_random_str()
+    some.universe = config.get_random_str()
+    some.identity = config.get_random_str()
+    some.height = config.get_random_int()
+    some.weight = config.get_random_int()
+    some.other_aliases = config.get_random_str()
     res = some.create()
     code = res.code
-
     assert code == 200
 
-    some.name = 'Ivanov'
+    some.name = ivi_user
     res = some.delete()
     code = res.code
-    message = res.msg
-
     assert code == 200
 
-    some.name = 'Ivanov'
+    some.name = ivi_user
     res = some.read()
     code = res.code
-
     assert code == 200
     assert res.msg == 'No such name'
 
 
-def test_2_delete_not_exist_character():
+def test_2_delete_not_exist_character(case_data):
     """Тест удаляет не существующий обьект на сервере
     """
 
-    url = 'http://rest.test.ivi.ru'
-    iviReq = IviServerRequests.IviServerRequests(url, 'v.milchakova9887@gmail.com', 'hgJH768Cv23')
-    some = Character.Character(iviReq)
-
-    some.name = 'Ivanov2'
+    some = case_data
+    some.name = '{}{}'.format(ivi_user, 2)
     res = some.update()
     code = res.code
     assert code == 500

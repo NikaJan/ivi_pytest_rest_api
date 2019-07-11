@@ -2,6 +2,7 @@ from requests.auth import HTTPBasicAuth
 from pack import IviServerRequests
 from pack import Character
 import requests
+from pack.config import ivi_user
 
 
 url = 'http://rest.test.ivi.ru'
@@ -35,11 +36,10 @@ def test_2_no_such_name():
     """Тест получает персонажа, которого нет на сервере и проверяет ответ
     """
 
-    some.name = 'Ivanov2'
+    some.name = '{}{}'.format(ivi_user, 2)
     res = some.read()
     code = res.code
     message = res.msg
-
     assert code == 200
     assert message == 'No such name'
 
@@ -51,7 +51,6 @@ def test_3_no_such_name_special_characters():
     some.name = '%!!@#$%'
     res = some.read()
     code = res.code
-
     assert code == 200
 
 
@@ -63,7 +62,6 @@ def test_4_no_name():
     res = some.read()
     code = res.code
     message = res.msg
-
     assert code == 404
     assert message is None
 
